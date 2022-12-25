@@ -3,6 +3,7 @@ extern crate pancurses;
 use pancurses::{initscr, endwin, Window};
 use std::{env, process::exit};
 
+mod art;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -16,7 +17,12 @@ fn main() {
 
     let stdscr: Window = initscr();
     stdscr.printw("Hello");
+    prev_to_new(&stdscr, &new_year)
     stdscr.refresh();
     stdscr.getch();
     endwin();
+}
+
+fn prev_to_new(_stdscr: &Window, _new_year: &u32) {
+    art::str_to_art(&(_new_year-1).to_string());
 }
