@@ -1,7 +1,7 @@
 extern crate pancurses;
 
 use pancurses::{initscr, endwin, Window};
-use std::{env, process::exit, thread};
+use std::{env, process::exit, thread, time};
 
 use unicode_segmentation::UnicodeSegmentation;
 
@@ -27,7 +27,7 @@ fn main() {
 }
 
 fn prev_to_new(_stdscr: &Window, _new_year: &u32) {
-    const padding: i32 = 3;
+    const PADDING: i32 = 3;
 
     let x: i32 = _stdscr.get_max_x();
     let y: i32 = _stdscr.get_max_y();
@@ -38,15 +38,30 @@ fn prev_to_new(_stdscr: &Window, _new_year: &u32) {
     let year_x_pos: i32 = (((x-(prev_year[0].graphemes(true).count() as i32))/2) as f32).floor() as i32;
 
     let mut year_y_pos: i32 = 0;
-    for i in 0..(y-(prev_year.len() as i32)-padding) {
+    for i in 0..(y-(prev_year.len() as i32)-PADDING) {
         _stdscr.erase();
         year_y_pos = i;
         for line in &prev_year {
-            _stdscr.mv(year_y_pos+padding, year_x_pos);
+            _stdscr.mv(year_y_pos+PADDING, year_x_pos);
             _stdscr.addstr(line);
             year_y_pos += 1;
         }
         _stdscr.refresh();       
-        thread::sleep_ms(100);
+        thread::sleep(time::Duration::from_millis(30));
+    }
+    _stdscr.erase();
+    _stdscr.refresh();  
+    thread::sleep(time::Duration::from_secs(1));
+
+    for i in (0..y-(prev_year.len() as i32)-PADDING).rev() {
+        _stdscr.erase();
+        year_y_pos = i;
+        for line in &curr_year {
+            _stdscr.mv(year_y_pos+PADDING, year_x_pos);
+            _stdscr.addstr(line);
+            year_y_pos += 1;
+        }
+        _stdscr.refresh();       
+        thread::sleep(time::Duration::from_millis(40));
     }
 }
