@@ -18,7 +18,7 @@ pub struct Firework {
     x_pos: i32,
     y_pos: i32,
     release_height: i32,
-    color: u64,
+    color: color::ColorPairId,
     state: FireworkState,
 }
 
