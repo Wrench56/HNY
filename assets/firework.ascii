@@ -1,0 +1,38 @@
+###############################
+######### VERSION 1.0 #########
+###############################
+
+firework::FireworkState::Spawn
+
+                .
+                |
+
+==============================
+firework::FireworkState::Flying
+
+                .
+                |
+                |
+
+==============================
+firework::FireworkState::Explosion1
+
+               * *
+              * # *
+               * *
+
+==============================
+firework::FireworkState::Explosion2
+
+                
+              *''*  
+             *_\/_*
+             * /\ *
+              *''*          
+=============================
+firework::FireworkState::Dead
+
+
+
+
+=============================
