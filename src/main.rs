@@ -1,10 +1,12 @@
 extern crate pancurses;
+extern crate rand;
 
-use pancurses::{initscr, endwin, Window};
+use pancurses::{initscr, endwin, Window, Input};
 use std::{env, process::exit, thread, time};
+use rand::Rng;
 
 use unicode_segmentation::UnicodeSegmentation;
-
+use console::Term;
 
 mod art;
 
@@ -17,13 +19,17 @@ fn main() {
 
     let new_year: &u32 = &args[1].parse::<u32>().unwrap();
 
-
+    // Initialize ncurses window
     let stdscr: Window = initscr();
-    stdscr.printw("Hello");
+
+    // Create exit thread
+    thread::spawn(|| {
+        exit_thread();
+    });
+
     prev_to_new(&stdscr, &new_year);
-    stdscr.refresh();
-    stdscr.getch();
-    endwin();
+    firework_loop(&stdscr);
+
 }
 
 fn prev_to_new(_stdscr: &Window, _new_year: &u32) {
@@ -64,4 +70,27 @@ fn prev_to_new(_stdscr: &Window, _new_year: &u32) {
         _stdscr.refresh();       
         thread::sleep(time::Duration::from_millis(40));
     }
+}
+
+fn firework_loop(_stdscr: &Window) {
+    loop {
+        
+        
+    }
+}
+
+
+fn exit_thread() {
+    let stdout = Term::buffered_stdout();
+
+    loop {
+        if let Ok(character) = stdout.read_char() {
+            match character {
+                'q' => break,
+                _ => {}
+            }
+        }
+    }
+    endwin();
+    exit(0)
 }
