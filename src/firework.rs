@@ -5,7 +5,9 @@ use pancurses::Window;
 enum FireworkState {
     Spawn,
     Flying,
-    Explosion
+    Explosion1,
+    Explosion2,
+    Dead
 }
 
 
@@ -27,13 +29,27 @@ impl Firework {
             state: FireworkState::Spawn
         }
     }
-    pub fn next_cycle(&mut self, _stdscr: &Window) {
+    pub fn next_cycle(&mut self, _stdscr: &Window) -> bool{
         match self.state {
             FireworkState::Spawn => {
                 self.state = FireworkState::Flying;
+                true
             }
-            FireworkState::Flying => {}
-            FireworkState::Explosion => {}
+            FireworkState::Flying => {
+                self.state = FireworkState::Explosion1;
+                true
+            }
+            FireworkState::Explosion1 => {
+                self.state = FireworkState::Explosion2;
+                true
+            }
+            FireworkState::Explosion2 => {
+                self.state = FireworkState::Dead;
+                true
+            }
+            FireworkState::Dead => {    
+                false
+            }
         }
     }
 }
