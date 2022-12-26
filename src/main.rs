@@ -38,11 +38,11 @@ fn main() {
 
 }
 
-fn prev_to_new(_stdscr: &Window, _new_year: &u32) {
+fn prev_to_new(stdscr: &Window, _new_year: &u32) {
     const PADDING: i32 = 3;
 
-    let x: i32 = _stdscr.get_max_x();
-    let y: i32 = _stdscr.get_max_y();
+    let x: i32 = stdscr.get_max_x();
+    let y: i32 = stdscr.get_max_y();
 
     let prev_year: Vec<String> = art::str_to_art(&(_new_year-1).to_string());
     let curr_year: Vec<String> = art::str_to_art(&_new_year.to_string());
@@ -51,36 +51,36 @@ fn prev_to_new(_stdscr: &Window, _new_year: &u32) {
 
     let mut year_y_pos: i32 = 0;
     for i in 0..(y-(prev_year.len() as i32)-PADDING) {
-        _stdscr.erase();
+        stdscr.erase();
         year_y_pos = i;
         for line in &prev_year {
-            _stdscr.mv(year_y_pos+PADDING, year_x_pos);
-            _stdscr.addstr(line);
+            stdscr.mv(year_y_pos+PADDING, year_x_pos);
+            stdscr.addstr(line);
             year_y_pos += 1;
         }
-        _stdscr.refresh();       
+        stdscr.refresh();       
         thread::sleep(time::Duration::from_millis(30));
     }
-    _stdscr.erase();
-    _stdscr.refresh();  
+    stdscr.erase();
+    stdscr.refresh();  
     thread::sleep(time::Duration::from_secs(1));
 
     for i in (0..y-(prev_year.len() as i32)-PADDING).rev() {
-        _stdscr.erase();
+        stdscr.erase();
         year_y_pos = i;
         for line in &curr_year {
-            _stdscr.mv(year_y_pos+PADDING, year_x_pos);
-            _stdscr.addstr(line);
+            stdscr.mv(year_y_pos+PADDING, year_x_pos);
+            stdscr.addstr(line);
             year_y_pos += 1;
         }
-        _stdscr.refresh();       
+        stdscr.refresh();       
         thread::sleep(time::Duration::from_millis(40));
     }
 }
 
-fn firework_loop(_stdscr: &Window) {
-    let x: i32 = _stdscr.get_max_x();
-    let y: i32 = _stdscr.get_max_y();
+fn firework_loop(stdscr: &Window) {
+    let x: i32 = stdscr.get_max_x();
+    let y: i32 = stdscr.get_max_y();
 
     let mut rng = rand::thread_rng();
 
@@ -91,17 +91,17 @@ fn firework_loop(_stdscr: &Window) {
                 rng.gen_range(5..(x-5)),
                 0,
                 rng.gen_range(((y/2) as f32).floor() as i32..((y/3) as f32*2 as f32).floor() as i32),
-                rng.gen_range(1..7),
+                rng.gen_range(1..7) as u64,
             ));
         }
         let mut item_index: i16 = fireworks.len() as i16 - 1 ; // i8 might be sufficient
         while item_index > 0 {
-            if fireworks[item_index as usize].next_cycle(_stdscr) == false {
+            if fireworks[item_index as usize].next_cycle(stdscr) == false {
                 fireworks.remove(item_index as usize);
             }
             item_index -= 1;
         }
-        _stdscr.refresh();
+        stdscr.refresh();
     }
 }
 
