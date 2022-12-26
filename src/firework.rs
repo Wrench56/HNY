@@ -2,6 +2,8 @@ extern crate pancurses;
 
 use pancurses::{Window, COLOR_PAIR};
 
+use crate::color;
+
 enum FireworkState {
     Spawn,
     Flying,
@@ -21,7 +23,7 @@ pub struct Firework {
 }
 
 impl Firework {
-    pub fn new(x_pos: i32, y_pos: i32, release_height: i32, color: u64) -> Firework {
+    pub fn new(x_pos: i32, y_pos: i32, release_height: i32, color: color::ColorPairId) -> Firework {
         Firework{
             x_pos: x_pos,
             y_pos: y_pos,

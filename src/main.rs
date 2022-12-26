@@ -91,7 +91,7 @@ fn firework_loop(stdscr: &Window) {
                 rng.gen_range(4..=(x-4)),
                 y - 2,
                 rng.gen_range(4..((((y/3) as f32)*2 as f32) as f32).floor() as i32),
-                rng.gen_range(1..7) as u64,
+                rng.gen_range(1..7) as color::ColorPairId,
             ));
         }
         let mut item_index: i16 = fireworks.len() as i16 - 1 ; // i8 might be sufficient

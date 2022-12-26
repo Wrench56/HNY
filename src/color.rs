@@ -3,6 +3,11 @@ extern crate pancurses;
 use pancurses::{start_color, use_default_colors, init_pair, OK};
 use pancurses::{COLOR_BLACK, COLOR_BLUE, COLOR_GREEN, COLOR_CYAN, COLOR_RED, COLOR_MAGENTA, COLOR_YELLOW, COLOR_WHITE};
 
+#[cfg(windows)] 
+pub type ColorPairId = u64;
+#[cfg(unix)]
+pub type ColorPairId = u32;
+
 const COLOR_TABLE: [i16; 8] = [
     COLOR_BLACK,
     COLOR_BLUE,
