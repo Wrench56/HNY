@@ -86,11 +86,11 @@ fn firework_loop(stdscr: &Window) {
 
     let mut fireworks: Vec<firework::Firework> = Vec::new();
     loop {
-        for _ in 0..rng.gen_range(0..3) {
+        for _ in 0..rng.gen_range(0..4) {
             fireworks.push(firework::Firework::new(
-                rng.gen_range(5..(x-5)),
-                0,
-                rng.gen_range(((y/2) as f32).floor() as i32..((y/3) as f32*2 as f32).floor() as i32),
+                rng.gen_range(4..=(x-4)),
+                y - 2,
+                rng.gen_range(4..((((y/3) as f32)*2 as f32) as f32).floor() as i32),
                 rng.gen_range(1..7) as u64,
             ));
         }
@@ -102,6 +102,8 @@ fn firework_loop(stdscr: &Window) {
             item_index -= 1;
         }
         stdscr.refresh();
+        thread::sleep(time::Duration::from_millis(128));
+        stdscr.erase();
     }
 }
 
