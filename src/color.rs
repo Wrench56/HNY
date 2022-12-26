@@ -23,7 +23,7 @@ pub fn init_colors() {
     }
 
     for (i, color) in COLOR_TABLE.iter().enumerate() {
-        init_pair(i as i16, *color, COLOR_BLACK);
+        init_pair(i as i16, *color, bg);
     }
 
 }
