@@ -1,7 +1,7 @@
 extern crate pancurses;
 extern crate rand;
 
-use pancurses::{initscr, endwin, noecho, curs_set, napms, Window};
+use pancurses::{initscr, endwin, noecho, curs_set, napms, Window, COLOR_PAIR};
 use std::{env, process::exit, thread};
 use rand::Rng;
 
@@ -38,7 +38,7 @@ fn main() {
     });
 
     prev_to_new(&stdscr, &new_year);
-    firework_loop(&stdscr);
+    firework_loop(&stdscr, &new_year);
 
 }
 
@@ -57,40 +57,35 @@ fn prev_to_new(stdscr: &Window, _new_year: &u32) {
     for i in 0..(y-(prev_year.len() as i32)-PADDING) {
         stdscr.erase();
         year_y_pos = i;
-        for line in &prev_year {
-            stdscr.mv(year_y_pos+PADDING, year_x_pos);
-            stdscr.addstr(line);
-            year_y_pos += 1;
-        }
+        art::draw_ascii_text(&stdscr, &prev_year, &mut (year_y_pos+PADDING), &year_x_pos);
         stdscr.refresh();       
-        napms(100);
+        napms(40);
     }
     stdscr.erase();
     stdscr.refresh();  
     napms(1000);
 
+    stdscr.attron(COLOR_PAIR(6));
     for i in (0..y-(prev_year.len() as i32)-PADDING).rev() {
         stdscr.erase();
         year_y_pos = i;
-        for line in &curr_year {
-            stdscr.mv(year_y_pos+PADDING, year_x_pos);
-            stdscr.addstr(line);
-            year_y_pos += 1;
-        }
+        art::draw_ascii_text(&stdscr, &curr_year, &mut (year_y_pos+PADDING), &year_x_pos);
         stdscr.refresh();       
         napms(40);
     }
 }
 
-fn firework_loop(stdscr: &Window) {
+fn firework_loop(stdscr: &Window, _new_year: &u32) {
     let x: i32 = stdscr.get_max_x();
     let y: i32 = stdscr.get_max_y();
 
     let mut rng = rand::thread_rng();
+    let curr_year: Vec<String> = art::str_to_art(&_new_year.to_string());
+    let year_x_pos: i32 = (((x-(curr_year[0].graphemes(true).count() as i32))/2) as f32).floor() as i32;
 
     let mut fireworks: Vec<firework::Firework> = Vec::new();
     loop {
-        for _ in 0..rng.gen_range(0..4) {
+        for _ in 0..rng.gen_range(0..=1) {
             fireworks.push(firework::Firework::new(
                 rng.gen_range(4..=(x-4)),
                 y - 2,
@@ -105,6 +100,8 @@ fn firework_loop(stdscr: &Window) {
             }
             item_index -= 1;
         }
+        stdscr.attron(COLOR_PAIR(6));
+        art::draw_ascii_text(&stdscr, &curr_year, &mut 3, &year_x_pos);
         stdscr.refresh();
         napms(128);
         stdscr.erase();
