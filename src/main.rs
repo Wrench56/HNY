@@ -56,10 +56,10 @@ fn prev_to_new(stdscr: &Window, _new_year: &u32) {
     let mut year_y_pos: i32 = 0;
     for i in 0..(y-(prev_year.len() as i32)-PADDING) {
         stdscr.erase();
-        year_y_pos = i;
         art::draw_ascii_text(&stdscr, &prev_year, &mut (year_y_pos+PADDING), &year_x_pos);
         stdscr.refresh();       
         napms(40);
+        year_y_pos = i+1;
     }
     stdscr.erase();
     stdscr.refresh();  
