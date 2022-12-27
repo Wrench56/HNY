@@ -107,7 +107,7 @@ fn firework_loop(stdscr: &Window, _new_year: &u32) {
         art::draw_ascii_text(&stdscr, &curr_year, &mut 3, &year_x_pos);
         stdscr.mvprintw(15, text_x_pos, &text);
         stdscr.refresh();
-        napms(128);
+        napms(100);
         stdscr.erase();
     }
 }
