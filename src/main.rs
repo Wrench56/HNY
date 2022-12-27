@@ -83,6 +83,9 @@ fn firework_loop(stdscr: &Window, _new_year: &u32) {
     let curr_year: Vec<String> = art::str_to_art(&_new_year.to_string());
     let year_x_pos: i32 = (((x-(curr_year[0].graphemes(true).count() as i32))/2) as f32).floor() as i32;
 
+    let text: String = String::from("  HAVE A HAPPY NEW YEAR!");
+    let text_x_pos: i32 = (((x-(text.graphemes(true).count() as i32))/2) as f32).floor() as i32;
+
     let mut fireworks: Vec<firework::Firework> = Vec::new();
     loop {
         for _ in 0..rng.gen_range(0..=1) {
@@ -102,6 +105,7 @@ fn firework_loop(stdscr: &Window, _new_year: &u32) {
         }
         stdscr.attron(COLOR_PAIR(6));
         art::draw_ascii_text(&stdscr, &curr_year, &mut 3, &year_x_pos);
+        stdscr.mvprintw(15, text_x_pos, &text);
         stdscr.refresh();
         napms(128);
         stdscr.erase();
