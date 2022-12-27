@@ -1,8 +1,8 @@
 extern crate pancurses;
 extern crate rand;
 
-use pancurses::{initscr, endwin, Window};
-use std::{env, process::exit, thread, time};
+use pancurses::{initscr, endwin, noecho, curs_set, napms, Window};
+use std::{env, process::exit, thread};
 use rand::Rng;
 
 use unicode_segmentation::UnicodeSegmentation;
@@ -24,6 +24,10 @@ fn main() {
 
     // Initialize ncurses window
     let stdscr: Window = initscr();
+
+    // Configure ncurses
+    noecho();
+    curs_set(0);
 
     // Initialize ncurses colors
     color::init_colors();
@@ -59,11 +63,11 @@ fn prev_to_new(stdscr: &Window, _new_year: &u32) {
             year_y_pos += 1;
         }
         stdscr.refresh();       
-        thread::sleep(time::Duration::from_millis(30));
+        napms(100);
     }
     stdscr.erase();
     stdscr.refresh();  
-    thread::sleep(time::Duration::from_secs(1));
+    napms(1000);
 
     for i in (0..y-(prev_year.len() as i32)-PADDING).rev() {
         stdscr.erase();
@@ -74,7 +78,7 @@ fn prev_to_new(stdscr: &Window, _new_year: &u32) {
             year_y_pos += 1;
         }
         stdscr.refresh();       
-        thread::sleep(time::Duration::from_millis(40));
+        napms(40);
     }
 }
 
@@ -102,7 +106,7 @@ fn firework_loop(stdscr: &Window) {
             item_index -= 1;
         }
         stdscr.refresh();
-        thread::sleep(time::Duration::from_millis(128));
+        napms(128);
         stdscr.erase();
     }
 }
